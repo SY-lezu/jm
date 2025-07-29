@@ -1,0 +1,59 @@
+client:
+  cache: null
+  domain: []
+  impl: api
+  postman:
+    meta_data:
+      headers: null
+      impersonate: chrome
+      proxies:
+        http: 127.0.0.1:7890
+        https: 127.0.0.1:7890
+    type: curl_cffi
+  retry_times: 5
+dir_rule:
+  base_dir: ./
+  rule: Bd_Pname
+download:
+  cache: true
+  image:
+    decode: true
+    suffix: null
+  threading:
+    image: 30
+    photo: 20
+log: true
+plugins:
+  after_init:
+    - plugin: usage_log # 实时打印硬件占用率的插件
+      kwargs:
+      interval: 0.5 # 间隔时间
+      enable_warning: true # 占用过大时发出预警
+  after_album:
+    - plugin: zip # 压缩文件插件
+      kwargs:
+        level: photo # 按照章节，一个章节一个压缩文件,photo/album
+        # level 也可以配成 album，表示一个本子对应一个压缩文件，该压缩文件会包含这个本子的所有章节
+
+        filename_rule: Ptitle # 压缩文件的命名规则
+        # zip_dir: D:\yunza\jm-py\zip\ # 压缩文件存放的文件夹
+
+        suffix: zip #压缩包后缀名，默认值为zip，可以指定为zip或者7z
+
+        # v2.6.0 以后，zip插件也支持dir_rule配置项，可以替代旧版本的zip_dir和filename_rule
+        # 请注意⚠ 使用此配置项会使filename_rule，zip_dir，suffix三个配置项无效，与这三个配置项同时存在时仅会使用dir_rule
+        # 示例如下:
+        dir_rule: # 新配置项，可取代旧的zip_dir和filename_rule
+          base_dir: ./zip/
+          rule: "Bd / {Pid}.zip" # 设置压缩文件夹规则，中间Atitle表示创建一层文件夹，名称是本子标题。[{Pid}]-{Ptitle}.zip 表示压缩文件的命名规则(需显式写出后缀名)
+        # 使用此方法指定压缩包存储路径则无需和level对应
+
+        delete_original_file: true # 压缩成功后，删除所有原文件和文件夹
+
+        # 在v2.6.0及以后版本，zip插件还支持设置密码和加密方式，使用encrypt配置项，该配置是可选的，示例如下：
+        # 1. 给压缩包设置一个指定密码
+        encrypt:
+          password: "tianyi"
+
+  valid: log
+version: "2.1"
