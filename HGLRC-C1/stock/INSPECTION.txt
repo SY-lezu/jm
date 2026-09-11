@@ -1,0 +1,180 @@
++ echo '=== file ==='
+=== file ===
++ file HGLRC-C1_DRAGON-V2.0_community-stock-dump.bin
+HGLRC-C1_DRAGON-V2.0_community-stock-dump.bin: ESP-IDF application image for ESP32, project name: "arduino-lib-builder", version esp-idf: 1b16ef6cfc, compiled on Sep 15 2022 18:07:33, IDF version: v4.4.2, entry address: 0x400855A4
++ echo
+
++ echo '=== esptool image_info ==='
+=== esptool image_info ===
++ python -m esptool image_info HGLRC-C1_DRAGON-V2.0_community-stock-dump.bin
+WARNING: Deprecated: Command 'image_info' is deprecated. Use 'image-info' instead.
+esptool v5.4.0
+Image size: 1476368 bytes
+Detected image type: ESP32
+
+ESP32 Image Header
+==================
+Image version: 1
+Entry point: 0x400855a4
+Segments: 6
+Flash size: 4MB
+Flash freq: 40m
+Flash mode: DIO
+
+ESP32 Extended Image Header
+===========================
+WP pin: 0xee (disabled)
+Flash pins drive settings: clk_drv: 0x0, q_drv: 0x0, d_drv: 0x0, cs0_drv: 0x0, hd_drv: 0x0, wp_drv: 0x0
+Chip ID: 0 (ESP32)
+Minimal chip revision: v0.0, (legacy min_rev = 0)
+Maximal chip revision: v0.0
+
+Segments Information
+====================
+Segment   Length   Load addr   File offs  Memory types
+-------  -------  ----------  ----------  ------------
+      0  0x5b3e4  0x3f400020  0x00000018  DROM
+      1  0x04c0c  0x3ffbdb60  0x0005b404  BYTE_ACCESSIBLE, DRAM
+      2  0xe89d0  0x400d0020  0x00060018  IROM
+      3  0x014ec  0x3ffc276c  0x001489f0  BYTE_ACCESSIBLE, DRAM
+      4  0x1d7d4  0x40080000  0x00149ee4  IRAM
+      5  0x00018  0x50000200  0x001676c0  RTC_DATA
+
+ESP32 Image Footer
+==================
+Checksum: 0xc7 (valid)
+Validation hash: d8d458a731992fccb0fde373af280d52d17805cbf6ea4cb7da8ab9bdb7190d3e (valid)
+
+Application Information
+=======================
+Project name: arduino-lib-builder
+App version: esp-idf: 1b16ef6cfc
+Compile time: Sep 15 2022 18:07:33
+ELF file SHA256: 0000000000000000000000000000000000000000000000000000000000000000
+ESP-IDF: v4.4.2
+Minimal eFuse block revision: 0.0
+Maximal eFuse block revision: 0.0
+Secure version: 0
++ echo
+
++ echo '=== printable strings related to ELRS/target/UART ==='
+=== printable strings related to ELRS/target/UART ===
++ strings -a HGLRC-C1_DRAGON-V2.0_community-stock-dump.bin
++ grep -Ei 'expresslrs|elrs|e28|sx128|uart|crsf|version|target|hglrc'
++ head -n 200
+uart-inverted
+expresslrs
+ExpressLRS TX
+elrs_tx
+DIY_2400_TX_ESP32_SX1280_E28
+calversion
+lib/CRSF/CRSF.cpp
+static void CRSF::duplex_set_TX()
+static void CRSF::duplex_set_RX()
+tx_version
+ELRS
+nvs_open("ELRS", NVS_READWRITE, &handle)
+ExpressLRS Joystick
+%s  ELRS-%.6s
+ExpressLRS
+ -DUART_INVERTED
+elrs
+{"status": "mismatch", "msg": "<b>Current target:</b> 
+<br/>It looks like you are flashing firmware with a different name to the current  firmware.  This sometimes happens because the hardware was flashed from the factory with an early version that has a different name. Or it may have even changed between major releases.
+<br/><br/>Please double check you are uploading the correct target, then proceed with 'Flash Anyway'."}
+/elrs.css
+/target
+uart_event_task
+[%6u][E][%s:%u] %s():  -- UART%d Event Task not Created!
+[%6u][E][%s:%u] %s(): Bad UART Number
+[%6u][E][%s:%u] %s(): OTA verification failed! Start rollback to the previous version ...
+uart_intr_config(uart->num, &uart_intr)
+C:/Users/Administrator/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-uart.c
+uart_flush_input(uart->num)
+uart_driver_install(uart_nr, rx_buffer_size, tx_buffer_size, 20, &(uart->uart_event_queue), 0)
+uart_param_config(uart_nr, &uart_config)
+uart_set_pin(uart_nr, txPin, rxPin, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE)
+uart_set_line_inverse(uart_nr, UART_SIGNAL_TXD_INV | UART_SIGNAL_RXD_INV)
+uartFlushTxOnly
+uartBegin
+E (%u) %s: %s(%d): uart_num error
+E (%u) %s: %s(%d): uart driver error
+E (%u) %s: %s(%d): uart size error
+E (%u) %s: %s(%d): uart data null
+E (%u) %s: %s(%d): uart rx buffer length error
+E (%u) %s: %s(%d): uart tx buffer length error
+E (%u) %s: UART driver malloc error
+E (%u) %s: UART driver already installed
+uart_set_rx_timeout
+uart_driver_delete
+uart_driver_install
+uart_flush_input
+uart_get_tx_buffer_free_size
+uart_get_buffered_data_len
+uart_reenable_intr_mask
+uart_read_bytes
+uart_write_bytes
+uart_wait_tx_done
+uart_intr_config
+uart_param_config
+uart_set_pin
+uart_isr_register
+uart_enable_tx_intr
+uart_pattern_queue_reset
+uart_disable_intr_mask
+uart_set_line_inverse
+uart_get_baudrate
+uart_set_baudrate
+uart_get_parity
+uart_set_parity
+uart_get_stop_bits
+uart_set_stop_bits
+uart_get_word_length
+uart_set_word_length
+/dev/uart
+/IDF/components/vfs/vfs_uart.c
+uart_write
+uart_return_char
+uart_read
+uart_close
+uart_fstat
+uart_fcntl
+uart_fsync
+heap != NULL && "free() target pointer is outside heap areas"
+ESP_ERR_INVALID_VERSION
+ESP_ERR_NVS_NEW_VERSION_FOUND
+BTDM ROM VERSION %04x
+BTDM CONTROLLER VERSION: %06x
+                             Uart ENV [%p], VHCI ENV [%p], PLF FUNCS [%p]
+huart.c
+uart_env_p != NULL
+MAGIC %08x VERSION %08x
+cal_version
+E (%u) %s: %s: store calibration version failed(0x%x)
+coexist adapter function version error! Version %x is expected, but it is %x
+OS adapter function version error! Version %d is expected, but it is %x
+.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NeoPixelBus/src/internal/Esp32_i2s.c
+.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/AsyncTCP-esphome/src/AsyncTCP.cpp
+HTTP Version not supported
+/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/NimBLEDevice.cpp
+/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/nimble/esp_port/esp-hci/src/esp_nimble_hci.c
+/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/nimble/nimble/host/services/gap/src/ble_svc_gap.c
+/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/nimble/nimble/host/services/gatt/src/ble_svc_gatt.c
+/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/nimble/nimble/host/src/ble_gap.c
+(/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/nimble/nimble/host/src/ble_hs.c
+/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/nimble/nimble/host/src/ble_hs_conn.c
+/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/nimble/nimble/host/src/ble_l2cap.c
+/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/nimble/porting/nimble/src/os_mbuf.c
+/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/nimble/porting/nimble/src/os_msys_init.c
+/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/nimble/porting/npl/freertos/src/npl_os_freertos.c
+/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/NimBLEAttValue.h
+/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/NimBLECharacteristic.cpp
+@/.pio/libdeps/DIY_2400_TX_ESP32_SX1280_E28_via_UART/NimBLE-Arduino@1.4.0/src/NimBLEDescriptor.cpp
+I (%d) %s: SC version: %s
+wpa crypto funcs expected size=%d version=%d, actual size=%d version=%d
+phy_version: %d, %s, %s, %s
+	@1,target_power,%d, %d, p_error,%d, correct_v,%d, error_accum, %d, tot_p,%d, coatt,%d, rf_g,%x,%x, txq_rate,%d, %d, chan,%d, rate_att,%d
+2,target_power,%d, p_error,%d, correct_v,%d, error_accum, %d, tot_p,%d, coatt,%d, rf_g,%x,%x, txq_rate,%d, %d, chan,%d, rate_att,%d
+>DIY ESP32 E28 2.4GHz TX
+DIY2400 E28
+{"uart-inverted": true, "wifi-on-interval": 60, "domain": 0}

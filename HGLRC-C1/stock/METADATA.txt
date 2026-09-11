@@ -1,0 +1,4 @@
+size_bytes=1476368
+source=https://files.catbox.moe/ap0jfk.bin
+source_thread=https://www.reddit.com/r/fpv/comments/1vkwwpz/updating_hglrc_c1_remote_to_elrs_41/
+provenance=community dump from a DRAGON_V2.0 HGLRC C1; not an official HGLRC release
