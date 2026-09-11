@@ -7,8 +7,9 @@ What it does:
 1) Detects CH340/CH341 serial ports.
 2) Lets you select the C1 COM port.
 3) Backs up the entire 4MB ESP32 flash.
-4) Writes the C1 stock application image to 0x10000.
-5) Verifies the flashed image.
+4) Keeps the ESP32 stub bootloader active after backup.
+5) Writes the C1 stock application image to 0x10000.
+6) Verifies the flashed image, then resets the ESP32 normally.
 
 Safety:
 - Does NOT run erase_flash / erase-flash.
@@ -108,7 +109,7 @@ def main() -> None:
 
     print("=" * 62)
     print(" HGLRC C1 Type-C Recovery Tool")
-    print(" Backup 4MB -> flash stock image at 0x10000 -> verify")
+    print(" Backup 4MB -> keep stub active -> flash at 0x10000 -> verify")
     print("=" * 62)
     print("\nWARNING:")
     print("- This stock image is a community dump from a DRAGON_V2.0 C1.")
@@ -127,7 +128,12 @@ def main() -> None:
 
     ans = input("\nRun ESP32 chip-id test first? [Y/n]: ").strip().lower()
     if ans in ("", "y", "yes"):
-        run([sys.executable, "-m", "esptool", "--port", port, "chip-id"])
+        run([
+            sys.executable, "-m", "esptool",
+            "--port", port,
+            "--after", "no-reset",
+            "chip-id",
+        ])
 
     backup_dir = base / "backups"
     backup_dir.mkdir(exist_ok=True)
@@ -139,6 +145,7 @@ def main() -> None:
         sys.executable, "-m", "esptool",
         "--port", port,
         "--baud", BAUD,
+        "--after", "no-reset-stub",
         "read-flash", "0x0", FLASH_SIZE,
         str(backup),
     ])
@@ -147,6 +154,7 @@ def main() -> None:
         die("Backup size is not exactly 4MB. Flashing has been cancelled.")
 
     print(f"\nBackup OK: {backup}")
+    print("ESP32 stub has been intentionally left active for the next step.")
     confirm = input(
         "\nStep 2/3 will write the stock application image to 0x10000.\n"
         "Type FLASH to continue: "
@@ -159,6 +167,8 @@ def main() -> None:
         sys.executable, "-m", "esptool",
         "--port", port,
         "--baud", BAUD,
+        "--before", "no-reset-no-sync",
+        "--after", "no-reset-stub",
         "write-flash", APP_OFFSET,
         str(firmware),
     ])
@@ -167,6 +177,8 @@ def main() -> None:
     run([
         sys.executable, "-m", "esptool",
         "--port", port,
+        "--before", "no-reset-no-sync",
+        "--after", "hard-reset",
         "verify-flash", APP_OFFSET,
         str(firmware),
     ])
