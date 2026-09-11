@@ -1,0 +1,90 @@
+name: Fetch HGLRC C1 stock ELRS dump
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/fetch-hglrc-c1-stock.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download community stock dump
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p HGLRC-C1/stock
+          curl -fL --retry 3 --connect-timeout 20 \
+            'https://files.catbox.moe/ap0jfk.bin' \
+            -o HGLRC-C1/stock/HGLRC-C1_DRAGON-V2.0_community-stock-dump.bin
+
+      - name: Record size and SHA256
+        shell: bash
+        run: |
+          set -euxo pipefail
+          cd HGLRC-C1/stock
+          sha256sum HGLRC-C1_DRAGON-V2.0_community-stock-dump.bin | tee SHA256SUMS.txt
+          stat -c 'size_bytes=%s' HGLRC-C1_DRAGON-V2.0_community-stock-dump.bin | tee METADATA.txt
+          printf '%s\n' \
+            'source=https://files.catbox.moe/ap0jfk.bin' \
+            'source_thread=https://www.reddit.com/r/fpv/comments/1vkwwpz/updating_hglrc_c1_remote_to_elrs_41/' \
+            'provenance=community dump from a DRAGON_V2.0 HGLRC C1; not an official HGLRC release' \
+            >> METADATA.txt
+
+      - name: Try ESP32 image inspection
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python -m pip install --disable-pip-version-check esptool
+          cd HGLRC-C1/stock
+          {
+            echo '=== file ==='
+            file HGLRC-C1_DRAGON-V2.0_community-stock-dump.bin || true
+            echo
+            echo '=== esptool image_info ==='
+            python -m esptool image_info HGLRC-C1_DRAGON-V2.0_community-stock-dump.bin || true
+            echo
+            echo '=== printable strings related to ELRS/target/UART ==='
+            strings -a HGLRC-C1_DRAGON-V2.0_community-stock-dump.bin | grep -Ei 'expresslrs|elrs|e28|sx128|uart|crsf|version|target|hglrc' | head -n 200 || true
+          } > INSPECTION.txt 2>&1
+
+      - name: Add provenance note
+        shell: bash
+        run: |
+          cat > HGLRC-C1/stock/README.md <<'EOF'
+          # HGLRC C1 DRAGON_V2.0 community stock dump
+
+          This binary was shared publicly by a community member who stated it was dumped from an HGLRC C1 with a `DRAGON_V2.0` PCB.
+
+          It is **not** presented as an official HGLRC download. Keep the SHA256 and metadata together with the binary.
+
+          Original discussion:
+          https://www.reddit.com/r/fpv/comments/1vkwwpz/updating_hglrc_c1_remote_to_elrs_41/
+
+          Original binary link:
+          https://files.catbox.moe/ap0jfk.bin
+
+          Do not flash it to a different hardware revision unless you have independently verified compatibility.
+          EOF
+
+      - name: Commit fetched dump and inspection
+        shell: bash
+        run: |
+          set -euxo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add HGLRC-C1/stock
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+          else
+            git commit -m 'Add C1 DRAGON_V2.0 community stock dump and inspection metadata'
+            git push
+          fi
