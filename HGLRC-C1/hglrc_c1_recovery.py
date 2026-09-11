@@ -150,7 +150,7 @@ def main() -> None:
     confirm = input(
         "\nStep 2/3 will write the stock application image to 0x10000.\n"
         "Type FLASH to continue: "
-    ).strip()
+    ).strip().upper()
     if confirm != "FLASH":
         die("Cancelled by user.", 0)
 
